@@ -1,4 +1,4 @@
-##0x16. C - Simple Shell
+## 0x16. C - Simple Shell
 
 A code that passes the Betty checks
 UNIX command line interpreter
