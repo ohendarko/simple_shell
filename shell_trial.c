@@ -33,6 +33,9 @@ int main()
 		{
 			continue;/*Empty input, prompt again*/
 		}
+/*Check for exit command*/
+		if (strcmp(token, "exit") == 0)
+			exit(0);
 /*Create an argument vector for execvp*/
 
 		char *args[20];/*Adjust the size as needed*/
