@@ -11,7 +11,6 @@ static int buffer_pos = 0;
 
 char *cstm_getline(void)
 {
-	char *line = NULL;
 	char *line = (char *)calloc(MAX_LINE_SIZE + 1, sizeof(char));
 	if (line == NULL)
 	{
@@ -43,6 +42,7 @@ char *cstm_getline(void)
 				free(line);
 				return (NULL);
 			}
+		}
 		}
 
 		for (int i = buffer_pos; i < buffer_pos + BUFFER_SIZE; i++)
@@ -98,8 +98,6 @@ int main()
 			printf("Error reading input or no data entered.\n");
 			break;
 		}
-	}
-		
+	}		
 	return (0);
 }
-
