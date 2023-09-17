@@ -11,7 +11,7 @@ static int buffer_pos = 0;
 
 char *cstm_getline(void)
 {
-	char *line = (char *)calloc(MAX_LINE_SIZE + 1, sizeof(char));
+	char *line = (char *)calloc((MAX_LINE_SIZE + 1),  sizeof(char));
 	if (line == NULL)
 	{
 		return (NULL);
