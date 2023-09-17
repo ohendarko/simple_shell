@@ -1,0 +1,3 @@
+test text ;)
+appended from shell
+2nd appended from shell
