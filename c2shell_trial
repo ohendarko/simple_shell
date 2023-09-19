@@ -1,0 +1,88 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <errno.h>
+#include "main.h"
+
+#define MAX_COMMANDS 10
+
+int main()
+{
+	char input[100];
+
+	while (1)
+	{
+		printf("$ ");
+		fflush(stdout);/*Flush the output to ensure the prompt is displayed */
+
+		if (fgets(input, sizeof(input), stdin) == NULL)
+		{
+			perror("Error reading input");
+			exit(EXIT_FAILURE);
+		}
+/*Remove the newline character from the input*/
+		size_t length = strlen(input);
+
+		if (length > 0 && input[length - 1] == '\n')
+		{
+			input[length - 1] = '\0';
+		}
+
+		char *commands[MAX_COMMANDS];
+		int numCommands = 0;
+
+		char *token = _strtok(input, ";");
+
+		while (token != NULL && numCommands < MAX_COMMANDS)
+		{
+			commands[numCommands++] = token;
+			token = _strtok(NULL, ";");
+		}
+/*executing commands individually*/
+		for (int i = 0; i < numCommands; i++)
+		{
+			char *args[20];
+			int argCount = 0;
+
+			token = _strtok(commands[i], " ");
+
+			if (token == NULL)
+			{
+				continue;/*Empty input, prompt again*/
+			}
+			args[argCount] = token;
+			while ((token = _strtok(NULL, " ")) != NULL)
+			{
+				args[argCount++] = token;
+			}
+			args[argCount] = NULL;
+
+			pid_t pid = fork();
+
+			if (pid < 0)
+			{
+				perror("Fork failed");
+				exit(EXIT_FAILURE);
+			}
+			else if (pid == 0)
+			{
+				/*Child process*/
+				if (execvp(args[0], args) < 0)
+				{
+					perror("Execution failed");
+					exit(EXIT_FAILURE);
+				}
+			}
+			else
+			{
+				/*Parent process*/
+				int status;
+
+				waitpid(pid, &status, 0);
+			}
+		}
+	}
+	return (0);
+}

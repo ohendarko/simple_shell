@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include "main.h"
+
+/*Change directory implementation*/
+void change_dir(const char *token)
+{
+	if (token == NULL)
+	{
+		chdir(getenv("HOME"));
+	}
+	else
+	{
+		if (chdir(token) == -1)
+		{
+			perror("-bash : cd");
+		}
+	}
+}

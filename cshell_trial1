@@ -4,10 +4,12 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include <errno.h>
+#include "main.h"
 
 int main()
 {
 	char input[100];
+	char input2[100];
 
 	while (1)
 	{
@@ -26,9 +28,11 @@ int main()
 		{
 			input[length - 1] = '\0';
 		}
+/*Make a copy of input*/
+		strcpy(input2, input);
 /*Split the input into command and arguments*/
 
-		char *token = strtok(input, " ");
+		char *token = _strtok(input, " ");
 
 		if (token == NULL)
 		{
@@ -37,14 +41,58 @@ int main()
 /*Check for exit command*/
 		if (strcmp(token, "exit") == 0)
 			exit(0);
-/*Create an argument vector for execvp*/
 
+/*implementing the ; command*/
+		if (strcmp(token,";") == 0)
+		{
+			char *token2 = strtok(input2, ";");
+			if (token2 == NULL)
+				continue;
+			
+			char *args[20];/*Adjust the size as needed*/
+		
+			args[0] = token2;
+			int argCount = 1;
+
+			while ((token2 = strtok(NULL, ";")) != NULL)
+			{
+				args[argCount++] = token2;
+			}
+			args[argCount] = NULL;/*Null-terminate the argument vector*/
+/*Fork and execute the command*/
+
+			pid_t pid = fork();
+
+			if (pid < 0)
+			{
+				perror("Fork failed");
+				exit(EXIT_FAILURE);
+			}
+			else if (pid == 0)
+			{
+				/*Child process*/
+				if (execvp(args[0], args) < 0)
+				{
+					perror("Execution failed");
+					exit(EXIT_FAILURE);
+				}
+			}
+			else
+			{
+				/*Parent process*/
+				int status;
+
+				waitpid(pid, &status, 0);
+			}
+		}
+
+/*Create an argument vector for execvp*/
 		char *args[20];/*Adjust the size as needed*/
 		
 		args[0] = token;
 		int argCount = 1;
 
-		while ((token = strtok(NULL, " ")) != NULL)
+		while ((token = _strtok(NULL, " ")) != NULL)
 		{
 			args[argCount++] = token;
 		}

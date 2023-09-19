@@ -10,6 +10,7 @@
 char *_strtok(char *str, const char *delim)
 {
 	static char *current = NULL;
+	char *start;
 
 	if (str != NULL)
 	{
@@ -21,7 +22,7 @@ char *_strtok(char *str, const char *delim)
 	{
 		return (NULL);
 	}
-	char *start = current;
+	start = current;
 
 	while (*current != '\0' && strchr(delim, *current) == NULL)
 	{

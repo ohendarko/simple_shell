@@ -8,10 +8,10 @@
 * main - main function
 * Return: return 0 on success
 */
-
 int main(void)
 {
 	char input[100];
+	char *token;
 
 	while (1)
 	{
@@ -20,7 +20,7 @@ int main(void)
 		get_input(input);
 /*Split the input into command and arguments*/
 
-		char *token = _strtok(input, " ");
+		token = _strtok(input, " ");
 
 		if (token == NULL)
 		{

@@ -7,13 +7,15 @@
 /*Change directory implementation*/
 char *get_input(char *input)
 {
+	size_t length;
+
 	if (fgets(input, sizeof(input), stdin) == NULL)
 	{
 		perror("Error reading input");
 		exit(EXIT_FAILURE);
 	}
  /*Remove the newline character from the input*/
-	size_t length = strlen(input);
+	length = strlen(input);
 
 	if (length > 0 && input[length - 1] == '\n')
 	{
