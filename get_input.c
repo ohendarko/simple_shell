@@ -4,7 +4,11 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "main.h"
-/*Change directory implementation*/
+/**
+* get_input - function to readline
+* @input: variable
+* Return: input
+*/
 char *get_input(char *input)
 {
 	size_t length;

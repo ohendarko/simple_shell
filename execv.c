@@ -4,14 +4,18 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "main.h"
-
-/*Change directory implementation*/
+/**
+* exec_comm - core shell function
+* @token: argument passed
+* Return: nothing
+*/
 void exec_comm(char *token)
 {
 	char *args[20];/*Adjust the size as needed*/
 	int argCount;
+
 	pid_t pid;
- 
+
 	args[0] = token;
 	argCount = 1;
 	while ((token = _strtok(NULL, " ")) != NULL)
@@ -19,7 +23,7 @@ void exec_comm(char *token)
 		args[argCount++] = token;
 	}
 	args[argCount] = NULL;/*Null-terminate the argument vector*/
-	
+
 	pid = fork();/*Fork and execute the command*/
 
 	if (pid < 0)

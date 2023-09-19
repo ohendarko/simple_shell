@@ -9,8 +9,11 @@
 */
 char *_strtok(char *str, const char *delim)
 {
-	static char *current = NULL;
+	static char *current;
 	char *start;
+
+	if (current == NULL)
+		current = NULL;
 
 	if (str != NULL)
 	{
@@ -33,5 +36,5 @@ char *_strtok(char *str, const char *delim)
 		*current = '\0';
 		current++;
 	}
-	return start;
+	return (start);
 }
