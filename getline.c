@@ -1,103 +1,109 @@
 #include <stdio.h>
-#include <unistd.h>
 #include <stdlib.h>
-#include <string.h>
 
-#define BUFFER_SIZE 1024
-#define MAX_LINE_SIZE BUFFER_SIZE
+#define INITIAL_BUFFER_SIZE 128
 
-static char buffer[BUFFER_SIZE];
-static int buffer_pos = 0;
+/**
+ *resize_buffer: Resize  buffer for the line
+ * This function resizes buffer by doubling capacity
+ *
+ * @line:pointer to line in the buffer
+ * @line capacity:pointer to current capacity of buffer
+ *
+ */
 
-char *cstm_getline(void)
+void resize_buffer(char **line, size_t *line_capacity)
 {
-	char *line = (char *)calloc((MAX_LINE_SIZE + 1),  sizeof(char));
+	*line_capacity *= 2;
+	char *new_line = (char *)realloc(*line, (*line_capacity) * sizeof(char));
+
+	if (new_line == NULL)
+	{
+		fprintf(stderr, "memory reallocation error\n");
+		free(*line);
+		exit(EXIT_FAILURE);
+	}
+	*line = new_line;
+}
+
+/**
+ * ctsm_getline -  custom getline function
+ *
+ * function reads a line from given stream
+ *
+ * @FILE stream: stream pointer to the file stream.
+ * @return: pointer to the line read from stream
+ * or null if no input entered.
+ */
+
+char *cstm_getline(FILE *stream)
+{
+	char *line = NULL;
+	size_t line_size = 0;
+	size_t line_capacity = INITIAL_BUFFER_SIZE;
+	int c;
+
+	if (stream == NULL)
+	{
+		return (NULL);
+	}
+
+	line = (char *)malloc(line_capacity * sizeof(char));
 	if (line == NULL)
 	{
 		return (NULL);
 	}
 
-	size_t line_size = 0;
-
-	while (1) 
+	while (1)
 	{
-		if (buffer_pos == 0)
+		c = fgetc(stream);
+		if (c == EOF)
 		{
-		ssize_t bytes_read = read(STDIN_FILENO, buffer, sizeof(buffer));
-
-		if (bytes_read < 0)
-		{
-			free(line);
-			return (NULL);
-		}
-
-		if (bytes_read == 0)
-		{
-			if (line_size > 0)
-			{
-				return (line);
-			}
-			else
+			if (line_size == 0)
 			{
 				free(line);
 				return (NULL);
 			}
-		}
-		}
-
-		for (int i = buffer_pos; i < buffer_pos + BUFFER_SIZE; i++)
-		{
-			if (buffer[i] == '\n' || buffer[i] == '\0')
-			{
-				if (line_size + i - buffer_pos + 1 <= MAX_LINE_SIZE)
-				{
-					strncat(line, buffer + buffer_pos, i - buffer_pos + 1);
-					line_size += i - buffer_pos + 1;
-				}
-				else
-				{
-					fprintf(stderr, "Line exceeds maximum input size\n");
-					free(line); 
-					return (NULL);
-				}
-
-				buffer_pos = i + 1;
-				line[line_size] = '\0'; 
-				return (line);
-			}
-
-			if (line_size + BUFFER_SIZE + 1 <= MAX_LINE_SIZE) 
-			{
-				strncat(line, buffer + buffer_pos, BUFFER_SIZE);
-				line_size += BUFFER_SIZE;
-				buffer_pos = 0; 
-			}
-			else 
-			{
-				fprintf(stderr, "Line exceeds maximum input size\n");
-				free(line); 
-				return (NULL);
-			}
-		}
-	}
-}
-
-int main() 
-{
-	while (1)
-	{
-		char *line = cstm_getline();
-
-		if (line != NULL) 
-		{
-			printf("You entered: %s\n", line);
-			free(line);
-		}
-		else
-		{
-			printf("Error reading input or no data entered.\n");
 			break;
 		}
-	}		
+
+		if (line_size >= line_capacity - 1)
+		{
+			resize_buffer(&line, &line_capacity);
+		}
+
+		line[line_size++] = (char)c;
+		if (c == '\n')
+		{
+			break;
+		}
+	}
+
+	line[line_size] = '\0';
+
+	return (line);
+}
+
+/**
+ * main function: this is the entry point of program
+ *
+ * responsible for handling user input
+ *
+ * return: exit status of the program..
+ */
+
+int main(void)
+{
+	char *line;
+
+	printf("Enter your text input:\n");
+
+	while ((line = cstm_getline(stdin)) != NULL)
+{
+		printf("Your input: %s", line);
+		free(line);
+	}
+
 	return (0);
 }
+
