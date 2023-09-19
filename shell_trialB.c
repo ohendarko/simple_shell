@@ -12,15 +12,24 @@ int main(void)
 {
 	char input[100];
 	char *token;
+	size_t length;
 
 	while (1)
 	{
 		printf("$ ");
 		fflush(stdout);/*Flush the output to ensure the prompt is displayed */
-		get_input(input);
-/*Split the input into command and arguments*/
+		if (fgets(input, sizeof(input), stdin) == NULL)
+		{
+			perror("Error reading input");
+			exit(EXIT_FAILURE);
+		}/*Remove the newline character from the input*/
+		length = strlen(input);
+		 if (length > 0 && input[length - 1] == '\n')
+		 {
+			 input[length - 1] = '\0';
+		 }/*Split the input into command and arguments*/
 
-		token = _strtok(input, " ");
+		token = strtok(input, " ");
 
 		if (token == NULL)
 		{
@@ -30,7 +39,7 @@ int main(void)
 			exit(0);
 		if (strcmp(token, "cd") == 0)/*Change directory implementation*/
 		{
-			token = _strtok(NULL, " ");
+			token = strtok(NULL, " ");
 			if (token == NULL)
 			{
 				chdir(getenv("HOME"));

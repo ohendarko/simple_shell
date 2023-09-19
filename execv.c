@@ -18,7 +18,7 @@ void exec_comm(char *token)
 
 	args[0] = token;
 	argCount = 1;
-	while ((token = _strtok(NULL, " ")) != NULL)
+	while ((token = strtok(NULL, " ")) != NULL)
 	{
 		args[argCount++] = token;
 	}
