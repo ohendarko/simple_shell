@@ -11,7 +11,7 @@
 */
 void exec_comm(char *token)
 {
-	char *args[20];/*Adjust the size as needed*/
+	char *args[1024];/*Adjust the size as needed*/
 	int argCount;
 
 	pid_t pid;
