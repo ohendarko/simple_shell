@@ -10,7 +10,7 @@
 */
 int main(void)
 {
-	char input[1024];
+	char input[5000];
 	char *token;
 	size_t length;
 
