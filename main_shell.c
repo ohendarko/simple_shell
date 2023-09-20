@@ -16,11 +16,9 @@ int main(void)
 
 	while (1)
 	{
-		printf("$ ");
 		fflush(stdout);/*Flush the output to ensure the prompt is displayed */
 		if (fgets(input, sizeof(input), stdin) == NULL)
 		{
-			perror("Error reading input");
 			exit(EXIT_FAILURE);
 		}
 
