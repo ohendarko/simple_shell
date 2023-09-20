@@ -4,6 +4,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "main.h"
+extern char **environ;
 /**
 * main - main function
 * @argc: -1 is command count
@@ -11,17 +12,14 @@
 * @envp: environment
 * Return: return 0 on success
 */
-int main(int argc, char *argv[], char *envp[])
+int main(void)
 {
-	int i = 0;
-	char *input = argv[1], *env_variable = envp[i], *token;
+	char input[5000],  *token, **env;
 	size_t length;
 
-	if (fgets(input, sizeof(input), stdin) == NULL)
-		exit(EXIT_FAILURE);
 	while (1)
 	{
-		if (argc < 2)
+		if (fgets(input, sizeof(input), stdin) == NULL)
 			exit(EXIT_FAILURE);
 		length = _strlen(input);/*Remove the newline character from the input*/
 		if (length > 0 && input[length - 1] == '\n')
@@ -44,11 +42,11 @@ int main(int argc, char *argv[], char *envp[])
 			continue;
 		}
 		exec_comm(token);/*Create and execute argument vector for execvp*/
-		while (env_variable != NULL)
+		env = environ;
+		while (*env != NULL)
 		{
-			printf("%s\n", env_variable);
-			i++;
-			env_variable = envp[i];
+			printf("%s\n", *env);
+			env++;
 		}
 	}
 	return (0);

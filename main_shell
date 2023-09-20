@@ -14,14 +14,14 @@
 int main(int argc, char *argv[], char *envp[])
 {
 	int i = 0;
-	char *input = argv[1], *env_variable = envp[i], *token;
+	char input[5000], *env_variable = envp[i], *token;
 	size_t length;
 
-	if (fgets(input, sizeof(input), stdin) == NULL)
-		exit(EXIT_FAILURE);
+	if (argc < 2)
+		fprintf(stderr, "%s", argv[0]);
 	while (1)
 	{
-		if (argc < 2)
+		if (fgets(input, sizeof(input), stdin) == NULL)
 			exit(EXIT_FAILURE);
 		length = _strlen(input);/*Remove the newline character from the input*/
 		if (length > 0 && input[length - 1] == '\n')
@@ -46,7 +46,7 @@ int main(int argc, char *argv[], char *envp[])
 		exec_comm(token);/*Create and execute argument vector for execvp*/
 		while (env_variable != NULL)
 		{
-			printf("%s\n", env_variable);
+			printf("\n\n%s", env_variable);
 			i++;
 			env_variable = envp[i];
 		}
