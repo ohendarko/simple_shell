@@ -1,56 +1,42 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <sys/wait.h>
-#include "main.h"
+#include "shell.h"
 /**
 * main - main function
-* argc: -1 is command count
-* argv: imputted commands
-* envp: environment
-* Return: return 0 on success
+* @ac: argument count
+* @av: argument vector
+* Return: 0
 */
-int main(void)
+int main(int ac, char **av)
 {
-	char input[5000],  *token/***env*/;
-	size_t length;
+	field_s field[] = { DEFAULT_FIELDS };
+	int fd = 2;
 
-	while (1)
+	asm ("mov %1, %0\n\t"
+	"add $3, %0"
+	: "=r" (fd)
+	: "r" (fd));
+
+	if (ac == 2)
 	{
-		if (fgets(input, sizeof(input), stdin) == NULL)
-			exit(EXIT_FAILURE);
-		length = _strlen(input);
-		if (length > 0 && input[length - 1] == '\n')/*Rmv newline x'ter from input*/
-			input[length - 1] = '\0';
-		token = _strtok(input, " ");/*Split the input into command and arguments*/
-		if (token == NULL)
-			exit(EXIT_SUCCESS);/*Empty input, EXIT*/
-		if (_strcmp(token, "exit") == 0)/*Check for exit command*/
-			exit(EXIT_SUCCESS);
-		if (_strcmp(token, "cd") == 0)/*Change directory implementation*/
+		fd = open(av[1], O_RDONLY);
+		if (fd == -1)
 		{
-			token = _strtok(NULL, " ");
-			if (token == NULL)
-				chdir(getenv("HOME"));
-			else
+			if (errno == EACCES)
+				exit(126);
+			if (errno == ENOENT)
 			{
-				if (chdir(token) == -1)
-					perror("-bash : cd");
+				_eputs(av[0]);
+				_eputs(": 0: Can't open ");
+				_eputs(av[1]);
+				_eputchar('\n');
+				_eputchar(BUF_FLUSH);
+				exit(127);
 			}
-			continue;
+			return (EXIT_FAILURE);
 		}
-		exec_comm(token);/*Create and execute argument vector for execvp*/
-		/**
-		*env = environ;
-		*unsetenv("LS_COLORS");
-		*printf("\nEnvironment:\n");
-		*while (*env != NULL)
-		*{
-		*	printf("%s\n", *env);
-		*	env++;
-		*}
-		*/
+	field->rfiledes = fd;
 	}
+	opu_envll(info);
+	kan_fhis(field);
+	_bash(field, av);
 	return (EXIT_SUCCESS);
 }

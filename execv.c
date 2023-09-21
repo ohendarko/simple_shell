@@ -24,9 +24,9 @@ void exec_comm(char *token)
 		exit(EXIT_FAILURE);
 	else if (pid == 0)/*Child process*/
 	{
-		dup2(1, 2);
 		if (setenv("VAR_NAME", "VAR_VALUE", 1) == -1)
 			exit(EXIT_FAILURE);
+	
 		if (execvp(args[0], args) < 0)
 			exit(EXIT_FAILURE);
 	}
