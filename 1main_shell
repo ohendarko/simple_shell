@@ -8,19 +8,16 @@
 * main - main function
 * Return: return 0 on success
 */
-int main(void)
+int main(int argc, char* argv[], char* envp[])
 {
-	char input[1024];
+	char* input = argv[1];;
 	char *token;
 	size_t length;
 
 	while (1)
 	{
-		printf("$ ");
-		fflush(stdout);/*Flush the output to ensure the prompt is displayed */
 		if (fgets(input, sizeof(input), stdin) == NULL)
 		{
-			perror("Error reading input");
 			exit(EXIT_FAILURE);
 		}
 

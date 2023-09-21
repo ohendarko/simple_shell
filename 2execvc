@@ -1,0 +1,56 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include "main.h"
+
+#define MAX_ARGS 1024
+/**
+* exec_comm - core shell function
+* @command: argument passed
+* Return: nothing
+*/
+void exec_comm(char *command)
+{
+	char *args[1024], *token;/*Adjust the size as needed*/
+	int argCount;
+	pid_t pid;
+
+	token = strtok(command, " ");
+	while ((token != NULL && argCount < MAX_ARGS - 1))
+	{
+		args[argCount++] = token;
+		token = strtok(NULL, " ");
+	}
+	args[argCount] = NULL;/*Null-terminate the argument vector*/
+
+	if (access(args[0], X_OK) == 0)
+	{
+		pid = fork();/*Fork and execute the command*/
+
+		if (pid < 0)
+		{
+			perror("Fork failed");
+			exit(EXIT_FAILURE);
+		}
+		else if (pid == 0)/*Child process*/
+		{
+			if (execvp(args[0], args) < 0)
+			{
+				perror("Execution failed");
+				exit(EXIT_FAILURE);
+			}
+		}
+		else/*Parent process*/
+		{
+			int status;
+
+			waitpid(pid, &status, 0);
+			if (WIFEXITED(status))
+				printf("Command exited with status %d\n", WEXITSTATUS(status));
+		}
+	}
+	else
+		printf("Command '%s' not found in PATH\n", args[0]);
+}

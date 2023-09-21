@@ -11,24 +11,33 @@
 */
 void exec_comm(char *token)
 {
-	int argCount = 0;
-	pid_t pid;
-	char *args[5000];/*Adjust the size as needed*/;
+	char *args[1024];/*Adjust the size as needed*/
+	int argCount;
 
-	args[argCount++] = token;
+	pid_t pid;
+
+	args[0] = token;
+	argCount = 1;
 	while ((token = _strtok(NULL, " ")) != NULL)
+	{
 		args[argCount++] = token;
+	}
 	args[argCount] = NULL;/*Null-terminate the argument vector*/
+
 	pid = fork();/*Fork and execute the command*/
+
 	if (pid < 0)
+	{
+		perror("Fork failed");
 		exit(EXIT_FAILURE);
+	}
 	else if (pid == 0)/*Child process*/
 	{
-		dup2(1, 2);
-		if (setenv("VAR_NAME", "VAR_VALUE", 1) == -1)
-			exit(EXIT_FAILURE);
 		if (execvp(args[0], args) < 0)
+		{
+			perror("Execution failed");
 			exit(EXIT_FAILURE);
+		}
 	}
 	else/*Parent process*/
 	{
