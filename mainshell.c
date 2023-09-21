@@ -4,25 +4,24 @@
 #include <unistd.h>
 #include <sys/wait.h>
 #include "main.h"
-extern char **environ;
 /**
 * main - main function
-* @argc: -1 is command count
-* @argv: imputted commands
-* @envp: environment
+* argc: -1 is command count
+* argv: imputted commands
+* envp: environment
 * Return: return 0 on success
 */
 int main(void)
 {
-	char input[5000],  *token, **env;
+	char input[5000],  *token/***env*/;
 	size_t length;
 
 	while (1)
 	{
 		if (fgets(input, sizeof(input), stdin) == NULL)
 			exit(EXIT_FAILURE);
-		length = _strlen(input);/*Remove the newline character from the input*/
-		if (length > 0 && input[length - 1] == '\n')
+		length = _strlen(input);
+		if (length > 0 && input[length - 1] == '\n')/*Rmv newline x'ter from input*/
 			input[length - 1] = '\0';
 		token = _strtok(input, " ");/*Split the input into command and arguments*/
 		if (token == NULL)
@@ -42,12 +41,16 @@ int main(void)
 			continue;
 		}
 		exec_comm(token);/*Create and execute argument vector for execvp*/
-		env = environ;
-		while (*env != NULL)
-		{
-			printf("%s\n", *env);
-			env++;
-		}
+		/**
+		*env = environ;
+		*unsetenv("LS_COLORS");
+		*printf("\nEnvironment:\n");
+		*while (*env != NULL)
+		*{
+		*	printf("%s\n", *env);
+		*	env++;
+		*}
+		*/
 	}
-	return (0);
+	return (EXIT_SUCCESS);
 }
