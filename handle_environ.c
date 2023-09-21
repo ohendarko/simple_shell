@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 /**
 * print_curenv - prints current env
 * @field: struct of arguments.

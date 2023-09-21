@@ -1,32 +1,30 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * ret_viron - returns the string array copy of our environ
- * @info: Structure containing potential arguments. Used to maintain
- *          constant function prototype.
- * Return: Always 0
- */
-char **ret_viron(info_t *info)
+* ret_viron - returns the string array copy of our environ
+* @info: struct of arguments
+* Return: expected
+*/
+char **ret_viron(field_s *field)
 {
-	if (!info->environ || info->env_changed)
+	if (!field->environvar || field->changein_env)
 	{
-		info->environ = list_to_strings(info->env);
-		info->env_changed = 0;
+		field->environvar = list_to_strings(info->env);
+		field->changein_env = 0;
 	}
 
-	return (info->environ);
+	return (field->environvar);
 }
 
 /**
- * envar_out - Remove an environment variable
- * @info: Structure containing potential arguments. Used to maintain
- *        constant function prototype.
- * Return: 1 on delete, 0 otherwise
- * @var: the string env var property
- */
-int envar_out(info_t *info, char *var)
+* envar_out - Remove an env var
+* @info: struct of args
+* Return: 1 on delete, 0 otherwise
+* @var: the string env var property
+*/
+int envar_out(field_s *field, char *var)
 {
-	list_t *node = info->env;
+	strlt_s *node = field->envar;
 	size_t i = 0;
 	char *p;
 
@@ -35,15 +33,15 @@ int envar_out(info_t *info, char *var)
 
 	while (node)
 	{
-		p = starts_with(node->str, var);
+		p = if_haystart(node->ring, var);
 		if (p && *p == '=')
 		{
-			info->env_changed = delete_node_at_index(&(info->env), i);
+			field->changein_env = delete_node_at_index(&(field->envvar), i);
 			i = 0;
-			node = info->env;
+			node = field->envvar;
 			continue;
 		}
-		node = node->next;
+		node = node->linked;
 		i++;
 	}
 	return (info->env_changed);

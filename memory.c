@@ -1,10 +1,9 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * free_pointer - frees a pointer and NULLs the address
- * @ptr: address of the pointer to free
- *
- * Return: 1 if freed, otherwise 0.
+ * free_pointer - frees a pointer
+ * @ptr: address to free
+ * Return: expected
  */
 int free_pointer(void **ptr)
 {

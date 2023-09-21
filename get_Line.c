@@ -1,12 +1,12 @@
-#include "shell.h"
+#include "main.h"
 
 /**
- * buff_ccoms - buffer chained commands
- * @field: struct of arguments
- * @buff: address
- * @len: another address
- * Return: expected
- */
+* buff_ccoms - buffer chained commands
+* @field: struct of arguments
+* @buff: address
+* @len: another address
+* Return: expected
+*/
 ssize_t buff_ccoms(field_s *field, char **buff, size_t *len)
 {
 	ssize_t i = 0;
@@ -88,7 +88,7 @@ ssize_t read_line(field_s *field)
 /**
  * get_buffer - read buffer
  * @field: struct of arguments
- * @buf: buffer
+ * @buffer: buffer
  * @i: size
  * Return: expected
  */

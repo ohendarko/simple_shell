@@ -1,8 +1,8 @@
 #include "main.h"
 /**
 * change_dir - changes current directory
-* @field: struc of arguments
-* Return: Always 0
+* @field: struct of arguments
+* Return: 0
 */
 int change_dir(field_s *field)
 {
@@ -46,10 +46,10 @@ int change_dir(field_s *field)
 	return (0);
 }
 /**
- * chan_d - Changes process current directory
- * @field: struct of arguments
- * Return: 0
- */
+* chan_d - Changes process current directory
+* @field: struct of arguments
+* Return: 0
+*/
 int chan_d(field_s *field)
 {
 	char **rarg;
