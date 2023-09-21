@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 /**
 * strt_nt - converts a string to an integer
 * @s: the string to be converted
@@ -45,9 +45,9 @@ int check_deli(char s, char *Delim)
 	return (0);
 }
 /**
-* is_alpha - checks for alphabetic character
-* @c: The character to check
-* Return: 1 if c is alphabetic, 0 otherwise
+* is_alpha - checks if alphabet
+* @s: character to check
+* Return: 1-s alphabet, 0
 */
 int is_alpha(int s)
 {

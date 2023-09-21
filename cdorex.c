@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 /**
 * change_dir - changes current directory
 * @field: struc of arguments
@@ -58,14 +58,13 @@ int chan_d(field_s *field)
 	rarg = field->cmdlinearg;
 	_puts("help call works. Function not yet implemented \n");
 	if (0)
-		_puts(*rarg); 
+		_puts(*rarg);
 	return (0);/*pending*/
 }
 /**
 * exit_shell - exit shell
 * @field: struct containing args.
-* Return: exit (0) if field.cmdlinearg[0] "exit" 
-* is false
+* Return: 0
 */
 int exit_shell(field_s *field)
 {
