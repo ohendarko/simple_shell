@@ -36,7 +36,7 @@ int envar_out(field_s *field, char *var)
 		p = if_haystart(node->ring, var);
 		if (p && *p == '=')
 		{
-			field->changein_env = delete_node_at_index(&(field->envvar), i);
+			field->changein_env = delete_node_at_index(&(field->envar), i);
 			i = 0;
 			node = field->envvar;
 			continue;
@@ -44,7 +44,7 @@ int envar_out(field_s *field, char *var)
 		node = node->linked;
 		i++;
 	}
-	return (info->env_changed);
+	return (field->changein_env);
 }
 
 /**
@@ -56,10 +56,10 @@ int envar_out(field_s *field, char *var)
  * @value: the string env var value
  * Return: Always 0
  */
-int envar_in(info_t *info, char *var, char *value)
+int envar_in(field_s *field, char *var, char *value)
 {
 	char *buf = NULL;
-	list_t *node;
+	strlt_s *node;
 	char *p;
 
 	if (!var || !value)
@@ -71,22 +71,21 @@ int envar_in(info_t *info, char *var, char *value)
 	_strcpy(buf, var);
 	_strcat(buf, "=");
 	_strcat(buf, value);
-	node = info->env;
+	node = field->envar;
 	while (node)
 	{
 		p = starts_with(node->str, var);
 		if (p && *p == '=')
 		{
-			free(node->str);
-			node->str = buf;
-			info->env_changed = 1;
+			free(node->ring);
+			node->ring = buf;
+			info->changein_env = 1;
 			return (0);
 		}
-		node = node->next;
+		node = node->linked;
 	}
-	add_node_end(&(info->env), buf, 0);
+	add_node_to_end(&(field->envar), buf, 0);
 	free(buf);
-	info->env_changed = 1;
+	field->changein_env = 1;
 	return (0);
 }
-

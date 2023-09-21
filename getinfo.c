@@ -1,73 +1,73 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * start_struct - Initializes info_t struct
- * @info: Struct address
+ * @field: Struct address
  */
-void start_struct(info_t *info)
+void start_struct(field_s *field)
 {
-	info->arg = NULL;
-	info->argv = NULL;
-	info->path = NULL;
-	info->argc = 0;
+	field->cmdarg = NULL;
+	field->cmdlinearg = NULL;
+	field->pathidir = NULL;
+	field->numofclarg = 0;
 }
 
 /**
  * mk_struct - Initializes info_t struct
- * @info: Struct address
+ * @field: Struct address
  * @av: Argument vector
  */
-void mk_struct(info_t *info, char **av)
+void mk_struct(field_s *field, char **av)
 {
 	int i = 0;
 
-	info->fname = av[0];
-	if (info->arg)
+	field->filename = av[0];
+	if (field->cmdarg)
 	{
-		info->argv = strtow(info->arg, " \t");
-		if (!info->argv)
+		field->cmdlinearg = _strtok(field->cmdarg, " \t");
+		if (!field->cmdlinearg)
 		{
-			info->argv = malloc(sizeof(char *) * 2);
-			if (info->argv)
+			field->cmdlinearg = malloc(sizeof(char *) * 2);
+			if (field->cmdlinearg)
 			{
-				info->argv[0] = _strdup(info->arg);
-				info->argv[1] = NULL;
+				field->cmdlinearg[0] = _strdup(field->cmdarg);
+				field->cmdlinearg[1] = NULL;
 			}
 		}
-		for (i = 0; info->argv && info->argv[i]; i++)
+		for (i = 0; field->cmdlinearg && field->cmdlinearg[i]; i++)
 			;
-		info->argc = i;
+		field->numofclarg = i;
 
-		replace_alias(info);
-		replace_vars(info);
+		alout_alin(field);
+		varout_varin(field);
 	}
 }
 
 /**
  * struct_disslv - Frees info_t struct fields
- * @info: Struct address
+ * @field: Struct address
  * @all: True if freeing all fields
  */
-void struct_disslv(info_t *info, int all)
+void struct_disslv(field_s *field, int all)
 {
-	ffree(info->argv);
-	info->argv = NULL;
-	info->path = NULL;
+	f_free(field->cmdlinearg);
+	field->cmdlinearg = NULL;
+	field->pathrdir = NULL;
 	if (all)
 	{
-		if (!info->cmd_buf)
-			free(info->arg);
-		if (info->env)
-			free_list(&(info->env));
-		if (info->history)
-			free_list(&(info->history));
-		if (info->alias)
-			free_list(&(info->alias));
-		ffree(info->environ);
-		info->environ = NULL;
-		bfree((void **)info->cmd_buf);
-		if (info->readfd > 2)
-			close(info->readfd);
+		if (!field->commbuff)
+			free(field->cmdarg);
+		if (field->envar)
+			free_list(&(field->envar));
+		if (field->history)
+			free_list(&(field->cmdhist));
+		if (field->lias)
+			free_listt(&(field->lias));
+		f_free(field->environvar);
+		field->environvar = NULL;
+		free_pointer((void **)field->commbuff);
+		if (field->rfiledes > 2)
+			close(field->rfiledes);
 		_putchar(BUF_FLUSH);
 	}
 }
