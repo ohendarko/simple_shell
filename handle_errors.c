@@ -1,7 +1,7 @@
 #include "main.h"
 /**
 * prinp_str - Prints input
-* @s: string 
+* @s: string
 * @fd: File Descriptor
 * Return: betty
 */
