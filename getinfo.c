@@ -60,7 +60,7 @@ void struct_disslv(field_s *field, int all)
 		if (field->envar)
 			free_listt(&(field->envar));
 		if (field->cmdhist)
-			free_list(&(field->cmdhist));
+			free_listt(&(field->cmdhist));
 		if (field->lias)
 			free_listt(&(field->lias));
 		f_free(field->environvar);

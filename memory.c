@@ -27,3 +27,4 @@ char *if_haystart(const char *haystack, const char *needle)
 		if (*needle++ != *haystack++)
 			return (NULL);
 	return ((char *)haystack);
+}

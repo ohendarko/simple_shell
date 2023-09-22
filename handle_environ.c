@@ -23,7 +23,7 @@ char *varof_envget(field_s *field, const char *n)
 
 	while (node)
 	{
-		s = if_haystart(node->str, n);
+		s = if_haystart(node->ring, n);
 		if (s && *s)
 			return (s);
 		node = node->linked;

@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 /**
 * main - main function
 * @ac: argument count
@@ -35,7 +35,7 @@ int main(int ac, char **av)
 		}
 	field->rfiledes = fd;
 	}
-	opu_envll(info);
+	opu_envll(field);
 	kan_fhis(field);
 	_bash(field, av);
 	return (EXIT_SUCCESS);

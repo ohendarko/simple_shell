@@ -19,12 +19,12 @@ strlt_s *add_node_at_start(strlt_s **alpha, const char *s, int idx)
 		return (NULL);
 
 	_memset((void *)fresh, 0, sizeof(strlt_s));
-	fresh->idx = idx;
+	fresh->no = idx;
 
 	if (s)
 	{
-		fresh->s = _strdup(s);
-		if (!fresh->s)
+		fresh->ring = _strdup(s);
+		if (!fresh->ring)
 		{
 			free(fresh);
 			return (NULL);
@@ -52,16 +52,16 @@ strlt_s *add_node_to_end(strlt_s **alpha, const char *s, int idx)
 
 	node = *alpha;
 	fresh = malloc(sizeof(strlt_s));
-	if (!new_node)
+	if (!fresh)
 		return (NULL);
 
 	_memset((void *)fresh, 0, sizeof(strlt_s));
-	fresh->idx = idx;
+	fresh->no = idx;
 
 	if (s)
 	{
-		fresh->s = _strdup(s);
-		if (!fresh->s)
+		fresh->ring = _strdup(s);
+		if (!fresh->ring)
 		{
 			free(new_node);
 			return (NULL);

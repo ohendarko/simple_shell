@@ -56,3 +56,12 @@ int is_alpha(int s)
 	else
 		return (0);
 }
+/**
+* check_shellmode - returns true if shell is interactive mode
+* @info: address
+* Return: 0
+*/
+int check_shellmode(info_t *info)
+{
+return (isatty(STDIN_FILENO) && info->readfd <= 2);
+}
