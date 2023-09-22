@@ -77,7 +77,7 @@ void if_xont(field_s *field, char *buf, size_t *cp, size_t i, size_t len)
 int alout_alin(field_s *field)
 {
 	int i;
-	list_t *node;
+	field_s *node;
 	char *cp;
 
 	for (i = 0; i < 10; i++)
@@ -121,7 +121,7 @@ int varout_varin(field_s *field)
 		}
 		if (!_strcmp(field->cmdlinearg[i], "$$"))
 		{
-			strout_strin(&(field->argv[i]),
+			strout_strin(&(field->cmdlinearg[i]),
 						   _strdup(atoi_clone(getpid(), 10, 0)));
 			continue;
 		}
