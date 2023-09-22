@@ -1,8 +1,8 @@
 #include "main.h"
 
 /**
- * is_chain - test if current char in buffer is a chain delimiter
- * @field: the parameter struct
+ * checkif_cdeli - test if chain delimiter
+ * @field: struct of args
  * @buf: the char buffer
  * @cp: address of current position in buf
  * Return: 1 if chain delimiter, 0 otherwise
@@ -15,18 +15,18 @@ int checkif_cdeli(field_s *field, char *buf, size_t *cp)
 	{
 		buf[j] = 0;
 		j++;
-		field->commbuff = CMD_OR;
+		field->tobuff = CMD_OR;
 	}
 	else if (buf[j] == '&' && buf[j + 1] == '&')
 	{
 		buf[j] = 0;
 		j++;
-		field->commbuff = CMD_AND;
+		field->tobuff = CMD_AND;
 	}
-	else if (buf[j] == ';') /* found end of this command */
+	else if (buf[j] == ';') /*PENDING*/
 	{
-		buf[j] = 0; /* replace semicolon with null */
-		field->commbuff = CMD_CHAIN;
+		buf[j] = 0; 
+		field->tobuff = CMD_CHAIN;
 	}
 	else
 		return (0);
@@ -48,7 +48,7 @@ void if_xont(field_s *field, char *buf, size_t *cp, size_t i, size_t len)
 {
 	size_t j = *cp;
 
-	if (field->commbuff == CMD_AND)
+	if (field->tobuff == CMD_AND)
 	{
 		if (field->statinfo)
 		{
@@ -56,9 +56,9 @@ void if_xont(field_s *field, char *buf, size_t *cp, size_t i, size_t len)
 			j = len;
 		}
 	}
-	if (field->commbuff == CMD_OR)
+	if (field->tobuff == CMD_OR)
 	{
-		if (!field->statinfo)
+		if (!field->statinfo)/*pending*/
 		{
 			buf[i] = 0;
 			j = len;
@@ -77,7 +77,7 @@ void if_xont(field_s *field, char *buf, size_t *cp, size_t i, size_t len)
 int alout_alin(field_s *field)
 {
 	int i;
-	field_s *node;
+	strlt_s *node;
 	char *cp;
 
 	for (i = 0; i < 10; i++)

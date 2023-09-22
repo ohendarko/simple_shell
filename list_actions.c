@@ -63,7 +63,7 @@ strlt_s *add_node_to_end(strlt_s **alpha, const char *s, int idx)
 		fresh->ring = _strdup(s);
 		if (!fresh->ring)
 		{
-			free(new_node);
+			free(fresh);
 			return (NULL);
 		}
 	}

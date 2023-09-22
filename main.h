@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
 #include <fcntl.h>
@@ -70,9 +71,9 @@ char *_strcpy(char *dest, char *src);
 int _putchar(char c);
 char *get_input(char *input);
 char *_strchr(char *s, char c);
+int check_deli(char s, char *Delim);
 char *_strcat(char *dest, char *src);
 /*int main(int argc, char* argv[], char* envp[]);*/
-int main(void);
 void semi_colon(char *input);
 int _strlen(char *s);
 char *trim_whitespace(char *str);
@@ -88,7 +89,7 @@ void f_free(char **pp);
 int new_numof_hist(field_s *field);
 int mimic_lias(field_s *field);
 char *_memset(char *s, char byte, unsigned int num);
-int check_shellmode(info_t *info);
+int check_shellmode(field_s *field);
 void _getcmd(field_s *field);
 int check_deli(char s, char *Delim);
 int st_alis(field_s *field, char *s);

@@ -7,7 +7,7 @@
 */
 int main(int ac, char **av)
 {
-	field_s field[] = { DEFAULT_FIELDS };
+	field_s field[] = { DEFAULT_FIELD };
 	int fd = 2;
 
 	asm ("mov %1, %0\n\t"
@@ -24,19 +24,19 @@ int main(int ac, char **av)
 				exit(126);
 			if (errno == ENOENT)
 			{
-				_eputs(av[0]);
-				_eputs(": 0: Can't open ");
-				_eputs(av[1]);
-				_eputchar('\n');
-				_eputchar(BUF_FLUSH);
+				pinput_str(av[0]);
+				pinput_str(": 0: Can't open ");
+				pinput_str(av[1]);
+				wrtchar_terr('\n');
+				wrtchar_terr(BUF_FLUSH);
 				exit(127);
 			}
 			return (EXIT_FAILURE);
 		}
 	field->rfiledes = fd;
 	}
-	opu_envll(field);
-	kan_fhis(field);
+	opu_envil(field);
+	kan_fhist(field);
 	_bash(field, av);
 	return (EXIT_SUCCESS);
 }

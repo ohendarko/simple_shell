@@ -61,7 +61,7 @@ int is_alpha(int s)
 * @info: address
 * Return: 0
 */
-int check_shellmode(info_t *info)
+int check_shellmode(field_s *field)
 {
-return (isatty(STDIN_FILENO) && info->readfd <= 2);
+return (isatty(STDIN_FILENO) && field->rfiledes <= 2);
 }

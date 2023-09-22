@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * **_strtok - splits a string into words. Repeat delimiters are ignored
