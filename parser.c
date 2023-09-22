@@ -9,6 +9,10 @@
  */
 int check_comm(field_s *field, char *path)
 {
+	struct stat st;
+
+	(void)field;
+
 	if (!path || stat(path, &st))
 		return (0);
 
@@ -54,7 +58,7 @@ char *find_inPATH(field_s *field, char *pathstr, char *cmd)
 
 	if (!pathstr)
 		return (NULL);
-	if ((_strlen(cmd) > 2) && starts_with(cmd, "./"))
+	if ((_strlen(cmd) > 2) && if_haystart(cmd, "./"))
 	{
 		if (check_comm(field, cmd))
 			return (cmd);

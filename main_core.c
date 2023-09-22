@@ -100,7 +100,7 @@ void _getcmd(field_s *field)
 	}
 	else
 	{
-		if ((check_shellmode(info) || varof_envget(field, "PATH=")
+		if ((check_shellmode(field) || varof_envget(field, "PATH=")
 			|| field->cmdlinearg[0][0] == '/') &&
 				check_comm(field, field->cmdlinearg[0]))
 			exec_comm(field);
@@ -129,7 +129,7 @@ void exec_comm(field_s *field)
 	}
 	if (pid == 0)
 	{
-		if (execve(field->pathrdir, field->cmdlinearg, ret_environ(field)) == -1)
+		if (execve(field->pathrdir, field->cmdlinearg, ret_viron(field)) == -1)
 		{
 			struct_disslv(field, 1);
 			if (errno == EACCES)
@@ -142,7 +142,7 @@ void exec_comm(field_s *field)
 		wait(&(field->statinfo));
 		if (WIFEXITED(field->statinfo))
 		{
-			field->status = WEXITSTATUS(field->statinfo);
+			field->statinfo = WEXITSTATUS(field->statinfo);
 			if (field->statinfo == 126)
 				err_msg(field, "Permission denied\n");
 		}

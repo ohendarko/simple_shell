@@ -16,7 +16,7 @@ char *filhist_obt(field_s *field)
 	buff = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
 	if (!buff)
 		return (NULL);
-	buf[0] = 0;
+	buff[0] = 0;
 	_strcpy(buff, dir);
 	_strcat(buff, "/");
 	_strcat(buff, HIST_FILE);
@@ -44,8 +44,8 @@ int croap_fhist(field_s *field)
 		return (-1);
 	for (node = field->cmdhist; node; node = node->linked)
 	{
-		_putsfd(node->ring, fd);
-		_putfd('\n', fd);
+		prinp_str(node->ring, fd);
+		wrtchat_tfd('\n', fd);
 	}
 	wrtchat_tfd(BUF_FLUSH, fd);
 	close(fd);
@@ -114,7 +114,7 @@ int addto_lkhist(field_s *field, char *buf, int linecount)
 	strlt_s *node = NULL;
 
 	if (field->cmdhist)
-		node = info->cmdhist;
+		node = field->cmdhist;
 	add_node_to_end(&node, buf, linecount);
 
 	if (!field->cmdhist)

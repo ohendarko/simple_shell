@@ -71,7 +71,7 @@ int st_alis(field_s *field, char *s)
 
 	_nst_alis(field, s);
 
-	return (add_node_to_end(&(info->alias), s, 0) == NULL);
+	return (add_node_to_end(&(field->lias), s, 0) == NULL);
 }
 /**
 * _givelias - prints alias
