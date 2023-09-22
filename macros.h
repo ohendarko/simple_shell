@@ -1,8 +1,6 @@
 #ifndef MACROS_H
 #define MACROS_H
 
-#include "main.h"
-#include "structs.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

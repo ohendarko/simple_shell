@@ -1,6 +1,5 @@
-#include "structs.h"
-#include "macros.h"
 #include "main.h"
+#include "macros.h"
 
 /**
 * get_listlen - find length of list

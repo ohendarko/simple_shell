@@ -1,5 +1,4 @@
 #include "main.h"
-#include "structs.h"
 #include "macros.h"
 /**
 * strt_nt - converts a string to an integer
