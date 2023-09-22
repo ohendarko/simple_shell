@@ -10,7 +10,7 @@ Implements the exit built-in, that exits the shell
 Implements the env built-in, that prints the current environment
 Handles arguments for the built-in exit
 Implements the setenv and unsetenv builtin commands
-Handles the commands separator 
+Handles the commands separator
 Handles the && and || shell logical operators
 Implements the alias builtin command
 Handles variables replacement
