@@ -60,10 +60,10 @@ int is_alpha(int s)
 }
 /**
 * check_shellmode - returns true if shell is interactive mode
-* @info: address
+* @field: address
 * Return: 0
 */
 int check_shellmode(field_s *field)
 {
-return (isatty(STDIN_FILENO) && field->rfiledes <= 2);
+	return (isatty(STDIN_FILENO) && field->rfiledes <= 2);
 }
