@@ -1,38 +1,38 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * filhist_obt - Gets the history file
- * @info: Parameter struct
+ * @field: Parameter struct
  *
  * Return: Allocated string containing history file
  */
-char *filhist_obt(info_t *info)
+char *filhist_obt(field_s *field)
 {
-	char *buf, *dir;
+	char *buff, *dir;
 
-	dir = _getenv(info, "HOME=");
+	dir = _getenv(field, "HOME=");
 	if (!dir)
 		return (NULL);
-	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
-	if (!buf)
+	buff = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
+	if (!buff)
 		return (NULL);
 	buf[0] = 0;
-	_strcpy(buf, dir);
-	_strcat(buf, "/");
-	_strcat(buf, HIST_FILE);
-	return (buf);
+	_strcpy(buff, dir);
+	_strcat(buff, "/");
+	_strcat(buff, HIST_FILE);
+	return (buff);
 }
 
 /**
  * croap_fhist - Creates a file or appends to an existing file
- * @info: Parameter struct
+ * @field: Parameter struct
  *
  * Return: 1 on success, else -1
  */
-int croap_fhist(info_t *info)
+int croap_fhist(field_s *field)
 {
 	ssize_t fd;
-	char *filename = filhist_obt(info);
+	char *filename = filhist_obt(field);
 	list_t *node = NULL;
 
 	if (!filename)
@@ -42,7 +42,7 @@ int croap_fhist(info_t *info)
 	free(filename);
 	if (fd == -1)
 		return (-1);
-	for (node = info->history; node; node = node->next)
+	for (node = field->history; node; node = node->next)
 	{
 		_putsfd(node->str, fd);
 		_putfd('\n', fd);
@@ -54,16 +54,16 @@ int croap_fhist(info_t *info)
 
 /**
  * kan_fhist - Reads history from file
- * @info: Parameter struct
+ * @field: Parameter struct
  *
  * Return: Histcount on success, 0 otherwise
  */
-int kan_fhist(info_t *info)
+int kan_fhist(field_s *field)
 {
 	int i, last = 0, linecount = 0;
 	ssize_t fd, rdlen, fsize = 0;
 	struct stat st;
-	char *buf = NULL, *filename = filhist_obt(info);
+	char *buf = NULL, *filename = filhist_obt(field);
 
 	if (!filename)
 		return (0);
@@ -88,49 +88,49 @@ int kan_fhist(info_t *info)
 		if (buf[i] == '\n')
 		{
 			buf[i] = 0;
-			addto_lkhist(info, buf + last, linecount++);
+			addto_lkhist(field, buf + last, linecount++);
 			last = i + 1;
 		}
 	if (last != i)
-		addto_lkhist(info, buf + last, linecount++);
+		addto_lkhist(field, buf + last, linecount++);
 	free(buf);
-	info->histcount = linecount;
+	field->histcount = linecount;
 	while (info->histcount-- >= HIST_MAX)
-		delete_node_at_index(&(info->history), 0);
-	new_numof_hist(info);
-	return (info->histcount);
+		delete_node_at_index(&(field->history), 0);
+	new_numof_hist(field);
+	return (field->histcount);
 }
 
 /**
  * addto_lkhist - Adds entry to a history linked list
- * @info: Parameter struct
+ * @field: Parameter struct
  * @buf: Buffer
  * @linecount: The history linecount, histcount
  *
  * Return: Always 0
  */
-int addto_lkhist(info_t *info, char *buf, int linecount)
+int addto_lkhist(field_s *field, char *buf, int linecount)
 {
 	list_t *node = NULL;
 
-	if (info->history)
+	if (field->history)
 		node = info->history;
 	add_node_end(&node, buf, linecount);
 
-	if (!info->history)
-		info->history = node;
+	if (!field->history)
+		field->history = node;
 	return (0);
 }
 
 /**
  * new_numof_hist - Renumbers the history linked list after changes
- * @info: Parameter struct
+ * @field: Parameter struct
  *
  * Return: The new histcount
  */
-int new_numof_hist(info_t *info)
+int new_numof_hist(field_s *field)
 {
-	list_t *node = info->history;
+	list_t *node = field->history;
 	int i = 0;
 
 	while (node)
@@ -138,6 +138,6 @@ int new_numof_hist(info_t *info)
 		node->num = i++;
 		node = node->next;
 	}
-	return (info->histcount = i);
+	return (field->histcount = i);
 }
 
