@@ -17,7 +17,7 @@ char **_strtok(char *str, char *del)
 	if (!del)
 		del = " ";
 	for (i = 0; str[i] != '\0'; i++)
-		if (!is_delim(str[i], del) && (is_delim(str[i + 1], del) || !str[i + 1]))
+		if (!check_deli(str[i], del) && (check_deli(str[i + 1], del) || !str[i + 1]))
 			numwords++;
 
 	if (numwords == 0)
@@ -27,10 +27,10 @@ char **_strtok(char *str, char *del)
 		return (NULL);
 	for (i = 0, j = 0; j < numwords; j++)
 	{
-		while (is_delim(str[i], del))
+		while (check_deli(str[i], del))
 			i++;
 		k = 0;
-		while (!is_delim(str[i + k], del) && str[i + k])
+		while (!check_deli(str[i + k], del) && str[i + k])
 			k++;
 		s[j] = malloc((k + 1) * sizeof(char));
 		if (!s[j])

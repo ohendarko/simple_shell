@@ -31,7 +31,40 @@
 #define HIST_MAX        4096
 extern char **environ;
 
-char *_strtok(char *str, const char *delim);
+typedef struct stringlist
+{
+	int no;
+	char *ring;
+	struct stringlist *linked;
+} strlt_s;
+typedef struct shellfields
+{
+	char *cmdarg;
+	char **cmdlinearg;
+	char *pathrdir;
+	int numofclarg;
+	unsigned int trcklcnt;
+	int errornum;
+	int flaglcnt;
+	char filename;
+	strlt_s *envar;
+	strlt_s *cmdhist;
+	strlt_s *lias;
+	char **environvar;
+	int changein_env;
+	int statinfo;
+	char **commbuff;
+	int tobuff;
+	int rfiledes;
+	int cntof_hist;
+} field_s;
+#define DEFAULT_FIELD {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, 0, 0}
+typedef struct shelbuilt
+{
+	char *form;
+	int (*func)(field_s *);
+} _inshell
+/*char *_strtok(char *str, const char *delim);*/
 void change_dir(const char *token);
 char *get_input(char *input);
 void exec_comm(char *token);
@@ -87,39 +120,24 @@ int get_incomm(field_s *field);
 void exec_comm(field_s *field);
 int free_pointer(void **ptr);
 char **ret_viron(field_s *field);
+void struct_disslv(field_s *field, int all);
+void mk_struct(field_s *field, char **av);
+void start_struct(field_s *field);
+int envar_out(field_s *field, char *var);
+int envar_in(field_s *field, char *var, char *value);
+int croap_fhist(field_s *field);
+char *filhist_obt(field_s *field);
+int kan_fhist(field_s *field);
+int check_comm(field_s *field, char *path);
+char *find_inPATH(field_s *field, char *pathstr, char *cmd);
+char *dcate_xters(char *pathstr, int start, int stop);
+char **_strtok2(char *str, char del);
+char **_strtok(char *str, char *del);
+int checkif_cdeli(field_s *field, char *buf, size_t *cp);
+void if_xont(field_s *field, char *buf, size_t *cp, size_t i, size_t len);
+int alout_alin(field_s *field);
+int varout_varin(field_s *field);
+int strout_strin(char **old, char *new);
+char *_strdup(const char *str);
 
-
-typedef struct stringlist
-{
-	int no;
-	char *ring;
-	struct stringlist *linked;
-} strlt_s;
-typedef struct shellfields
-{
-	char *cmdarg;
-	char **cmdlinearg;
-	char *pathrdir;
-	int numofclarg;
-	unsigned int trcklcnt;
-	int errornum;
-	int flaglcnt;
-	char filename;
-	strlt_s *envar;
-	strlt_s *cmdhist;
-	strlt_s *lias;
-	char **environvar;
-	int changein_env;
-	int statinfo;
-	char **commbuff;
-	int tobuff;
-	int rfiledes;
-	int cntof_hist;
-} field_s;
-#define DEFAULT_FIELD {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, 0, 0}
-typedef struct shelbuilt
-{
-	char *form;
-	int (*func)(field_s *);
-} _inshell
 #endif

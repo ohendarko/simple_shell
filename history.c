@@ -10,7 +10,7 @@ char *filhist_obt(field_s *field)
 {
 	char *buff, *dir;
 
-	dir = _getenv(field, "HOME=");
+	dir = varof_envget(field, "HOME=");
 	if (!dir)
 		return (NULL);
 	buff = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
@@ -33,7 +33,7 @@ int croap_fhist(field_s *field)
 {
 	ssize_t fd;
 	char *filename = filhist_obt(field);
-	list_t *node = NULL;
+	strlt_s *node = NULL;
 
 	if (!filename)
 		return (-1);
@@ -42,12 +42,12 @@ int croap_fhist(field_s *field)
 	free(filename);
 	if (fd == -1)
 		return (-1);
-	for (node = field->history; node; node = node->next)
+	for (node = field->cmdhist; node; node = node->linked)
 	{
-		_putsfd(node->str, fd);
+		_putsfd(node->ring, fd);
 		_putfd('\n', fd);
 	}
-	_putfd(BUF_FLUSH, fd);
+	wrtchat_tfd(BUF_FLUSH, fd);
 	close(fd);
 	return (1);
 }
@@ -94,11 +94,11 @@ int kan_fhist(field_s *field)
 	if (last != i)
 		addto_lkhist(field, buf + last, linecount++);
 	free(buf);
-	field->histcount = linecount;
-	while (info->histcount-- >= HIST_MAX)
-		delete_node_at_index(&(field->history), 0);
+	field->cntof_hist = linecount;
+	while (field->cntof_hist-- >= HIST_MAX)
+		delete_node_at_index(&(field->cmdhist), 0);
 	new_numof_hist(field);
-	return (field->histcount);
+	return (field->cntof_hist);
 }
 
 /**
@@ -111,14 +111,14 @@ int kan_fhist(field_s *field)
  */
 int addto_lkhist(field_s *field, char *buf, int linecount)
 {
-	list_t *node = NULL;
+	strlt_s *node = NULL;
 
-	if (field->history)
-		node = info->history;
-	add_node_end(&node, buf, linecount);
+	if (field->cmdhist)
+		node = info->cmdhist;
+	add_node_to_end(&node, buf, linecount);
 
-	if (!field->history)
-		field->history = node;
+	if (!field->cmdhist)
+		field->cmdhist = node;
 	return (0);
 }
 
@@ -130,14 +130,13 @@ int addto_lkhist(field_s *field, char *buf, int linecount)
  */
 int new_numof_hist(field_s *field)
 {
-	list_t *node = field->history;
+	strlt_s *node = field->cmdhist;
 	int i = 0;
 
 	while (node)
 	{
-		node->num = i++;
-		node = node->next;
+		node->no = i++;
+		node = node->linked;
 	}
-	return (field->histcount = i);
+	return (field->cntof_hist = i);
 }
-

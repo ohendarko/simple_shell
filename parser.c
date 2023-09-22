@@ -81,4 +81,3 @@ char *find_inPATH(field_s *field, char *pathstr, char *cmd)
 	}
 	return (NULL);
 }
-

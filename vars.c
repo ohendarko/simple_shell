@@ -1,14 +1,13 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * is_chain - test if current char in buffer is a chain delimiter
  * @field: the parameter struct
  * @buf: the char buffer
  * @cp: address of current position in buf
- *
  * Return: 1 if chain delimiter, 0 otherwise
  */
-int is_chain(field_s *field, char *buf, size_t *cp)
+int checkif_cdeli(field_s *field, char *buf, size_t *cp)
 {
 	size_t j = *cp;
 
@@ -16,18 +15,18 @@ int is_chain(field_s *field, char *buf, size_t *cp)
 	{
 		buf[j] = 0;
 		j++;
-		field->cmd_buf_type = CMD_OR;
+		field->commbuff = CMD_OR;
 	}
 	else if (buf[j] == '&' && buf[j + 1] == '&')
 	{
 		buf[j] = 0;
 		j++;
-		field->cmd_buf_type = CMD_AND;
+		field->commbuff = CMD_AND;
 	}
 	else if (buf[j] == ';') /* found end of this command */
 	{
 		buf[j] = 0; /* replace semicolon with null */
-		field->cmd_buf_type = CMD_CHAIN;
+		field->commbuff = CMD_CHAIN;
 	}
 	else
 		return (0);
@@ -49,17 +48,17 @@ void if_xont(field_s *field, char *buf, size_t *cp, size_t i, size_t len)
 {
 	size_t j = *cp;
 
-	if (field->cmd_buf_type == CMD_AND)
+	if (field->commbuff == CMD_AND)
 	{
-		if (field->status)
+		if (field->statinfo)
 		{
 			buf[i] = 0;
 			j = len;
 		}
 	}
-	if (field->cmd_buf_type == CMD_OR)
+	if (field->commbuff == CMD_OR)
 	{
-		if (!field->status)
+		if (!field->statinfo)
 		{
 			buf[i] = 0;
 			j = len;
@@ -83,17 +82,17 @@ int alout_alin(field_s *field)
 
 	for (i = 0; i < 10; i++)
 	{
-		node = node_starts_with(field->alias, field->argv[0], '=');
+		node = get_prefx(field->lias, field->cmdlinearg[0], '=');
 		if (!node)
 			return (0);
-		free(field->argv[0]);
-		cp = _strchr(node->str, '=');
+		free(field->cmdlinearg[0]);
+		cp = _strchr(node->ring, '=');
 		if (!cp)
 			return (0);
 		cp = _strdup(cp + 1);
 		if (!cp)
 			return (0);
-		field->argv[0] = cp;
+		field->cmdlinearg[0] = cp;
 	}
 	return (1);
 }
@@ -107,33 +106,33 @@ int alout_alin(field_s *field)
 int varout_varin(field_s *field)
 {
 	int i = 0;
-	list_t *node;
+	strlt_s *node;
 
-	for (i = 0; field->argv[i]; i++)
+	for (i = 0; field->cmdlinearg[i]; i++)
 	{
-		if (field->argv[i][0] != '$' || !field->argv[i][1])
+		if (field->cmdlinearg[i][0] != '$' || !field->cmdlinearg[i][1])
 			continue;
 
-		if (!_strcmp(field->argv[i], "$?"))
+		if (!_strcmp(field->cmdlinearg[i], "$?"))
 		{
-			replace_string(&(field->argv[i]),
-						   _strdup(convert_number(field->status, 10, 0)));
+			strout_strin(&(field->cmdlinearg[i]),
+						   _strdup(atoi_clone(field->statinfo, 10, 0)));
 			continue;
 		}
-		if (!_strcmp(field->argv[i], "$$"))
+		if (!_strcmp(field->cmdlinearg[i], "$$"))
 		{
-			replace_string(&(field->argv[i]),
-						   _strdup(convert_number(getpid(), 10, 0)));
+			strout_strin(&(field->argv[i]),
+						   _strdup(atoi_clone(getpid(), 10, 0)));
 			continue;
 		}
-		node = node_starts_with(field->env, &field->argv[i][1], '=');
+		node = get_prefx(field->envar, &field->cmdlinearg[i][1], '=');
 		if (node)
 		{
-			replace_string(&(field->argv[i]),
-						   _strdup(_strchr(node->str, '=') + 1));
+			strout_strin(&(field->cmdlinearg[i]),
+						   _strdup(_strchr(node->ring, '=') + 1));
 			continue;
 		}
-		replace_string(&field->argv[i], _strdup(""));
+		strout_strin(&field->cmdlinearg[i], _strdup(""));
 	}
 	return (0);
 }
