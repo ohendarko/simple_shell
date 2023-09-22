@@ -1,4 +1,6 @@
 #include "main.h"
+#include "structs.h"
+#include "macros.h"
 /**
 * mimic_lias - mimics the alias builtin (man alias)
 * @field: struct of arguments.

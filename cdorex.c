@@ -1,4 +1,6 @@
 #include "main.h"
+#include "structs.h"
+#include "macros.h"
 /**
 * change_dir - changes current directory
 * @field: struct of arguments
