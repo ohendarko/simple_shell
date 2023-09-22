@@ -11,60 +11,11 @@
 #include <sys/wait.h>
 #include <limits.h>
 #include <errno.h>
+#include "macros.h"
+#include "structs.h"
 
-#define READ_BUF_SIZE 1024
-#define WRITE_BUF_SIZE 1024
-#define BUF_FLUSH -1
-
-#define CMD_NORM        0
-#define CMD_OR          1
-#define CMD_AND         2
-#define CMD_CHAIN       3
-
-#define CONVERT_LOWERCASE       1
-#define CONVERT_UNSIGNED        2
-
-
-#define USE_GETLINE 0
-#define USE_STRTOK 0
- 
-#define HIST_FILE       ".simple_shell_history"
-#define HIST_MAX        4096
 extern char **environ;
 
-typedef struct stringlist
-{
-	int no;
-	char *ring;
-	struct stringlist *linked;
-} strlt_s;
-typedef struct shellfields
-{
-	char *cmdarg;
-	char **cmdlinearg;
-	char *pathrdir;
-	int numofclarg;
-	unsigned int trcklcnt;
-	int errornum;
-	int flaglcnt;
-	char *filename;
-	strlt_s *envar;
-	strlt_s *cmdhist;
-	strlt_s *lias;
-	char **environvar;
-	int changein_env;
-	int statinfo;
-	char **commbuff;
-	int tobuff;
-	int rfiledes;
-	int cntof_hist;
-} field_s;
-#define DEFAULT_FIELD {NULL, NULL, NULL, 0, 0, 0, 0, NULL, NULL, NULL, NULL, NULL, 0, 0, NULL, 0, 0, 0}
-typedef struct shelbuilt
-{
-	char *form;
-	int (*func)(field_s *);
-} _inshell;
 /*char *_strtok(char *str, const char *delim);*/
 void _puts(char *str);
 char *_strcpy(char *dest, char *src);
