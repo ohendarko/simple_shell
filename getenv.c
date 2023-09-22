@@ -2,7 +2,7 @@
 
 /**
 * ret_viron - returns the string array copy of our environ
-* @info: struct of arguments
+* @field: struct of arguments
 * Return: expected
 */
 char **ret_viron(field_s *field)
@@ -18,7 +18,7 @@ char **ret_viron(field_s *field)
 
 /**
 * envar_out - Remove an env var
-* @info: struct of args
+* @field: struct of args
 * Return: 1 on delete, 0 otherwise
 * @var: the string env var property
 */
@@ -50,7 +50,7 @@ int envar_out(field_s *field, char *var)
 /**
  * envar_in - Initialize a new environment variable,
  *             or modify an existing one
- * @info: Structure containing potential arguments. Used to maintain
+ * @field: Structure containing potential arguments. Used to maintain
  *        constant function prototype.
  * @var: the string env var property
  * @value: the string env var value

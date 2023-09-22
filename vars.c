@@ -25,7 +25,7 @@ int checkif_cdeli(field_s *field, char *buf, size_t *cp)
 	}
 	else if (buf[j] == ';') /*PENDING*/
 	{
-		buf[j] = 0; 
+		buf[j] = 0;
 		field->tobuff = CMD_CHAIN;
 	}
 	else
