@@ -63,7 +63,7 @@ int rmenv_var(field_s *field)
 		return (1);
 	}
 	for (i = 1; i <= field->numofclarg; i++)
-		envar_out(field, info->cmdlinearg[i]);
+		envar_out(field, field->cmdlinearg[i]);
 
 	return (0);
 }

@@ -8,7 +8,7 @@ void start_struct(field_s *field)
 {
 	field->cmdarg = NULL;
 	field->cmdlinearg = NULL;
-	field->pathidir = NULL;
+	field->pathrdir = NULL;
 	field->numofclarg = 0;
 }
 
@@ -58,8 +58,8 @@ void struct_disslv(field_s *field, int all)
 		if (!field->commbuff)
 			free(field->cmdarg);
 		if (field->envar)
-			free_list(&(field->envar));
-		if (field->history)
+			free_listt(&(field->envar));
+		if (field->cmdhist)
 			free_list(&(field->cmdhist));
 		if (field->lias)
 			free_listt(&(field->lias));

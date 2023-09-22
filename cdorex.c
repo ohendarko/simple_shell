@@ -72,7 +72,7 @@ int exit_shell(field_s *field)
 
 	if (field->cmdlinearg[1])
 	{
-		checex = cvstr_int(field->cmdlinearg[1]);
+		checex = cvstr_tint(field->cmdlinearg[1]);
 		if (checex == -1)/*pending*/
 		{
 			field->statinfo = 2;
@@ -81,7 +81,7 @@ int exit_shell(field_s *field)
 			wrtchar_terr('\n');/*pending*/
 			return (1);
 		}
-		field->errornum = cvstr_int(field->cmdlinearg[1]);
+		field->errornum = cvstr_tint(field->cmdlinearg[1]);
 		return (-2);
 	}
 	field->errornum = -1;

@@ -55,7 +55,7 @@ int pbase_ten(int inp, int fd)
 	unsigned int cab, curr;
 
 	if (fd == STDERR_FILENO)
-		__putchar = _eputchar;
+		__putchar = wrtchar_terr;
 	if (inp < 0)
 	{
 		cab = -inp;

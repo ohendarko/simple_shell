@@ -46,7 +46,7 @@ typedef struct shellfields
 	unsigned int trcklcnt;
 	int errornum;
 	int flaglcnt;
-	char filename;
+	char *filename;
 	strlt_s *envar;
 	strlt_s *cmdhist;
 	strlt_s *lias;
@@ -63,11 +63,14 @@ typedef struct shelbuilt
 {
 	char *form;
 	int (*func)(field_s *);
-} _inshell
+} _inshell;
 /*char *_strtok(char *str, const char *delim);*/
-void change_dir(const char *token);
+void _puts(char *str);
+char *_strcpy(char *dest, char *src);
+int _putchar(char c);
 char *get_input(char *input);
-void exec_comm(char *token);
+char *_strchr(char *s, char c);
+char *_strcat(char *dest, char *src);
 /*int main(int argc, char* argv[], char* envp[]);*/
 int main(void);
 void semi_colon(char *input);
@@ -76,12 +79,17 @@ char *trim_whitespace(char *str);
 int _strcmp(char *s1, char *s2);
 char *_strncpy(char *dest, char *src, int n);
 int strt_nt(char *s);
+int addto_lkhist(field_s *field, char *buf, int linecount);
+void *re_alloc(void *ptr, unsigned int old_size, unsigned int new_size);
 int check_deli(char s, char *Delim);
 int is_alpha(int s);
+char *_strncat(char *dest, char *src, int n);
+void f_free(char **pp);
 int mimic_lias(field_s *field);
-int _nst_alis;
 int st_alis(field_s *field, char *s);
+int _nst_alis(field_s *field, char *s);
 int _givelias(strlt_s *node);
+char *if_haystart(const char *haystack, const char *needle);
 int disp_hist(field_s *field);
 int change_dir(field_s *field);
 int chan_d(field_s *field);

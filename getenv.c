@@ -9,7 +9,7 @@ char **ret_viron(field_s *field)
 {
 	if (!field->environvar || field->changein_env)
 	{
-		field->environvar = list_to_strings(info->env);
+		field->environvar = get_liststr(field->envar);
 		field->changein_env = 0;
 	}
 
@@ -38,7 +38,7 @@ int envar_out(field_s *field, char *var)
 		{
 			field->changein_env = delete_node_at_index(&(field->envar), i);
 			i = 0;
-			node = field->envvar;
+			node = field->envar;
 			continue;
 		}
 		node = node->linked;
@@ -74,12 +74,12 @@ int envar_in(field_s *field, char *var, char *value)
 	node = field->envar;
 	while (node)
 	{
-		p = starts_with(node->str, var);
+		p = if_haystart(node->ring, var);
 		if (p && *p == '=')
 		{
 			free(node->ring);
 			node->ring = buf;
-			info->changein_env = 1;
+			field->changein_env = 1;
 			return (0);
 		}
 		node = node->linked;

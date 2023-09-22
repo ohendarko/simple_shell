@@ -20,7 +20,7 @@ ssize_t buff_ccoms(field_s *field, char **buff, size_t *len)
 #if USE_GETLINE
 		i = getline(buff, &meno, stdin);
 #else
-		i = next_fgets(info, buff, &meno);
+		i = next_fgets(field, buff, &meno);
 #endif
 		if (i > 0)/*PENDING*/
 		{
@@ -51,7 +51,7 @@ ssize_t read_line(field_s *field)
 	static char *buff; /*PENDING semicolon*/
 	static size_t i, j, len;
 	ssize_t r = 0;
-	char **buf_p = &(info->arg), *p;
+	char **buf_p = &(field->cmdarg), *p;
 
 	_putchar(BUF_FLUSH);
 	r = buff_ccoms(field, &buff, &len);
@@ -65,7 +65,7 @@ ssize_t read_line(field_s *field)
 		if_xont(field, buff, &j, i, len);
 		while (j < len) /*PENDING*/
 		{
-			if (checkif_cdeli(info, buff, &j))
+			if (checkif_cdeli(field, buff, &j))
 				break;
 			j++;
 		}
@@ -74,7 +74,7 @@ ssize_t read_line(field_s *field)
 		if (i >= len)
 		{
 			i = len = 0; /*PENDING*/
-			field->tobuffe = CMD_NORM;
+			field->tobuff = CMD_NORM;
 		}
 
 		*buf_p = p; /*PENDING*/

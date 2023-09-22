@@ -8,7 +8,7 @@ int mimic_lias(field_s *field)
 {
 	int i = 0;
 	char *s = NULL;
-	strl_s *node = NULL;
+	strlt_s *node = NULL;
 
 	if (field->numofclarg == 1)
 	{
@@ -49,7 +49,7 @@ int _nst_alis(field_s *field, char *s)
 	j = *i;
 	*i = 0;
 	kim = delete_node_at_index(&(field->lias),
-		get_node_index(field->lias, node_starts_with(field->lias, s, -1)));
+		get_at_index(field->lias, get_prefx(field->lias, s, -1)));
 	*i = j;
 	return (kim);
 }
@@ -67,10 +67,11 @@ int st_alis(field_s *field, char *s)
 	if (!kim)
 		return (1);
 	if (!*++kim)
-		return (_nst_alis(info, s));
+		return (_nst_alis(field, s));
 
-	_nst_alis(info, s);
-	return (add_node_end(&(info->alias), s, 0) == NULL);
+	_nst_alis(field, s);
+
+	return (add_node_to_end(&(info->alias), s, 0) == NULL);
 }
 /**
 * _givelias - prints alias
@@ -83,8 +84,8 @@ int _givelias(strlt_s *node)
 
 	if (node)
 	{
-		kim = _strchr(node->str, '=');
-		for (s = node->str; s <= kim; s++)
+		kim = _strchr(node->ring, '=');
+		for (s = node->ring; s <= kim; s++)
 			_putchar(*s);
 		_putchar('\'');
 		_puts(kim + 1);

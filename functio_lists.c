@@ -36,8 +36,8 @@ char **get_liststr(strlt_s *head)
 		return (NULL);
 	for (i = 0; node; node = node->linked, i++)
 	{
-		str = malloc(_strlen(node->ring) + 1);
-		if (!str)
+		ring = malloc(_strlen(node->ring) + 1);
+		if (!ring)
 		{
 			for (j = 0; j < i; j++)
 				free(strs[j]);
@@ -87,7 +87,7 @@ strlt_s *get_prefx(strlt_s *node, char *prefix, char c)
 
 	while (node)
 	{
-		p = starts_with(node->ring, prefix);
+		p = if_haystart(node->ring, prefix);
 		if (p && ((c == -1) || (*p == c)))
 			return (node);
 		node = node->linked;

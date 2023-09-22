@@ -15,4 +15,15 @@ int free_pointer(void **ptr)
 	}
 	return (0);
 }
-
+/**
+ * if_haystart - Ifstarts with haystack
+ * @haystack: search
+ * @needle: find
+ * Return: 0
+ */
+char *if_haystart(const char *haystack, const char *needle)
+{
+	while (*needle)
+		if (*needle++ != *haystack++)
+			return (NULL);
+	return ((char *)haystack);

@@ -50,7 +50,7 @@ int wrtchar_terr(char s)
 		i = 0;
 	}
 	if (s != BUF_FLUSH)
-		buffer[i++] = c;
+		buffer[i++] = i;
 	return (1);
 }
 
