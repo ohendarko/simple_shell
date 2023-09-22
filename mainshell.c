@@ -1,3 +1,5 @@
+#include "structs.h"
+#include "macros.h"
 #include "main.h"
 /**
 * main - main function

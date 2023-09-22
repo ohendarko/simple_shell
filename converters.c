@@ -1,3 +1,5 @@
+#include "structs.h"
+#include "macros.h"
 #include "main.h"
 /**
 * rplc_hash - Replaces 1st instance of '#' with '\0'

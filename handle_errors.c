@@ -1,3 +1,5 @@
+#include "structs.h"
+#include "macros.h"
 #include "main.h"
 /**
 * prinp_str - Prints input
