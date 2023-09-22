@@ -1,13 +1,13 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * check_comm - determines if a file is an executable command
- * @info: the info struct
+ * @field: the field struct
  * @path: path to the file
  *
  * Return: 1 if true, 0 otherwise
  */
-int check_comm(info_t *info, char *path)
+int check_comm(field_s *field, char *path)
 {
 	if (!path || stat(path, &st))
 		return (0);
@@ -29,25 +29,25 @@ int check_comm(info_t *info, char *path)
  */
 char *dcate_xters(char *pathstr, int start, int stop)
 {
-	static char buf[1024];
-	int i = 0, k = 0;
+	static char buff[1024];
+	int i = 0, j = 0;
 
-	for (k = 0, i = start; i < stop; i++)
+	for (j = 0, i = start; i < stop; i++)
 		if (pathstr[i] != ':')
-			buf[k++] = pathstr[i];
-	buf[k] = 0;
-	return (buf);
+			buff[j++] = pathstr[i];
+	buff[j] = 0;
+	return (buff);
 }
 
 /**
  * find_inPATH - finds this cmd in the PATH string
- * @info: the info struct
+ * @field: the field struct
  * @pathstr: the PATH string
  * @cmd: the cmd to find
  *
  * Return: full path of cmd if found or NULL
  */
-char *find_inPATH(info_t *info, char *pathstr, char *cmd)
+char *find_inPATH(field_s *field, char *pathstr, char *cmd)
 {
 	int i = 0, curr_pos = 0;
 	char *path;
@@ -56,7 +56,7 @@ char *find_inPATH(info_t *info, char *pathstr, char *cmd)
 		return (NULL);
 	if ((_strlen(cmd) > 2) && starts_with(cmd, "./"))
 	{
-		if (check_comm(info, cmd))
+		if (check_comm(field, cmd))
 			return (cmd);
 	}
 	while (1)
@@ -71,7 +71,7 @@ char *find_inPATH(info_t *info, char *pathstr, char *cmd)
 				_strcat(path, "/");
 				_strcat(path, cmd);
 			}
-			if (check_comm(info, path))
+			if (check_comm(field, path))
 				return (path);
 			if (!pathstr[i])
 				break;
